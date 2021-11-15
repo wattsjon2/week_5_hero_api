@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    {% if heroes != [] %}
+    <h3>Here are everyone's Favorite heroes!</h3>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Favorite Hero</th>
+            <th>Reason</th>
+        </tr>
+        {% for hero in heroes %}
+        <tr>
+            <td>{{hero['fav_hero']}}</td>
+            <td>{{hero['reason'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <h3>Be the first to add a hero!</h3>
+    {% endif %}
+</div>
+
+{% endblock content %}
