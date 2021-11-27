@@ -8,3 +8,10 @@ class UserLoginForm(FlaskForm):
     email = StringField('Email', validators= [DataRequired(),Email()])
     password = PasswordField('Password', validators= [DataRequired()])
     submit_button = SubmitField()
+
+
+class UserHeroAddForm(FlaskForm):
+    # email, password, submit_button
+    hero = StringField('Hero', validators= [DataRequired()])
+    reason = StringField('Reason', validators= [DataRequired()])
+    submit_button = SubmitField()

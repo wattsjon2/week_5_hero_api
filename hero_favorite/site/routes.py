@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, jsonify
 from flask_login.utils import login_required
 from ..api.routes import get_heroes_from_all_users
 from hero_favorite.models import db, Hero
+from hero_favorite.forms import UserHeroAddForm
+from flask_login import login_user, logout_user, current_user, login_required
 
 """
     Note that in the below code, some arguments are specified when createing blueprint objects
@@ -16,8 +18,23 @@ def home():
     heroes = Hero.query
     return render_template('index.html', heroes = heroes)
 
-@site.route('/profile')
+@site.route('/profile', methods = ['GET','POST'])
 @login_required
 def profile():
-    return render_template('profile.html')
+    form = UserHeroAddForm()
+    try:
+        if request.method == 'POST' and form.validate_on_submit():
+            fav_hero = form.hero.data
+            reason = form.reason.data
+            user_token = current_user.token
+            hero = Hero(fav_hero, reason, user_token)
+            db.session.add(hero)
+            db.session.commit()
+            return render_template('profile.html', form = form)
+    except:
+         raise Exception('Invalid Form Data: Please Check your form.')
+
+    return render_template('profile.html', form = form)
+
+    
  
